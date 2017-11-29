@@ -149,7 +149,7 @@ public class CameraActivity extends Fragment {
                   setFocusArea((int)event.getX(0), (int)event.getY(0), new Camera.AutoFocusCallback() {
                     public void onAutoFocus(boolean success, Camera camera) {
                       if (success) {
-                        takePicture(0, 0, 85);
+                        takePicture(0, 0, 60);
                       } else {
                         //Log.d(TAG, "onTouch:" + " setFocusArea() did not suceed");
                       }
@@ -157,7 +157,7 @@ public class CameraActivity extends Fragment {
                   });
 
                 } else if(tapToTakePicture){
-                  takePicture(0, 0, 85);
+                  takePicture(0, 0, 60);
 
                 } else if(tapToFocus){
                   setFocusArea((int)event.getX(0), (int)event.getY(0), new Camera.AutoFocusCallback() {
@@ -512,13 +512,21 @@ public class CameraActivity extends Fragment {
     } */
     
     //List<Camera.Size> sizes = custParameters.getSupportedPictureSizes();
-    Camera.Size size = supportedSizes.get(0);
-    for(int i=0;i<supportedSizes.size();i++)
-    {
-        if(supportedSizes.get(i).width > size.width)
-            size = supportedSizes.get(i);
-    }
+    if (width == 0 || height == 0) {
     
+      Camera.Size size = supportedSizes.get(0);
+      for(int i=0;i<supportedSizes.size();i++)
+      {
+          if(supportedSizes.get(i).width > size.width)
+              size = supportedSizes.get(i);
+      }
+      
+    } else {
+      
+      size.width = width;
+      size.height = height;
+      
+    }
     //Log.d(TAG, "CameraPreview optimalPictureSize " + size.width + 'x' + size.height);
     return size;
   }
@@ -539,8 +547,7 @@ public class CameraActivity extends Fragment {
 
 	  Camera.Size size = getOptimalPictureSize(width, height, params.getPreviewSize(), params.getSupportedPictureSizes());
 	  params.setPictureSize(size.width, size.height);
-	  currentQuality = quality;
-    //currentQuality = 100;
+	  currentQuality = quality; 
 
 	  if(cameraCurrentlyLocked == Camera.CameraInfo.CAMERA_FACING_FRONT) {
 		// The image will be recompressed in the callback
