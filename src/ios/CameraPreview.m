@@ -631,6 +631,10 @@
   [self.sessionManager tapToFocus:point.x yPoint:point.y];
 }
 
+-(void) setOnPictureTakenHandler:(CDVInvokedUrlCommand*)command {
+  self.onPictureTakenHandlerId = command.callbackId;
+}
+
 - (void) invokeTakePicture {
   [self invokeTakePicture:0.0 withHeight:0.0 withQuality:0.85];
 }
@@ -690,7 +694,7 @@
           finalCImage = imageToFilter;
         }
 
-        NSMutableArray *params = [[NSMutableArray alloc] init];
+        //NSMutableArray *params = [[NSMutableArray alloc] init];
 
         CGImageRef finalImage = [self.cameraRenderController.ciContext createCGImage:finalCImage fromRect:finalCImage.extent];
         UIImage *resultImage = [UIImage imageWithCGImage:finalImage];
@@ -704,9 +708,9 @@
 
         CGImageRelease(resultFinalImage); // release CGImageRef to remove memory leaks
 
-        [params addObject:base64Image];
+        //[params addObject:base64Image];
 
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:params];
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:base64Image];
         [pluginResult setKeepCallbackAsBool:true];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.onPictureTakenHandlerId];
       }
