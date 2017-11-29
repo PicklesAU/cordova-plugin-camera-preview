@@ -510,11 +510,9 @@ public class CameraActivity extends Fragment {
         }
       }
     } */
-    
-    //List<Camera.Size> sizes = custParameters.getSupportedPictureSizes();
+    Camera.Size size = supportedSizes.get(0);
     if (width == 0 || height == 0) {
-    
-      Camera.Size size = supportedSizes.get(0);
+      
       for(int i=0;i<supportedSizes.size();i++)
       {
           if(supportedSizes.get(i).width > size.width)
