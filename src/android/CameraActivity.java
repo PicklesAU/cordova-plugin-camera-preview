@@ -510,14 +510,20 @@ public class CameraActivity extends Fragment {
         }
       }
     } */
-    Camera.Size size = supportedSizes.get(0);
-    for(int i=0;i<supportedSizes.size();i++)
-    {
-        if(supportedSizes.get(i).width > size.width)
-            size = supportedSizes.get(i);
+    if(width == 0 || height == 0) {
+      Camera.Size size = supportedSizes.get(0);
+      for(int i=0;i<supportedSizes.size();i++)
+      {
+          if(supportedSizes.get(i).width > size.width)
+              size = supportedSizes.get(i);
+      }
+      return size;
+    } else {
+      Camera.Size size = mCamera.new Size(width, height);
+      return size;
     }
     //Log.d(TAG, "CameraPreview optimalPictureSize " + size.width + 'x' + size.height);
-    return size;
+    //return size;
   }
 
   public void takePicture(final int width, final int height, final int quality){
@@ -533,13 +539,9 @@ public class CameraActivity extends Fragment {
       new Thread() {
         public void run() { */
 	  Camera.Parameters params = mCamera.getParameters();
-    if (width == 0 || height == 0) {
-      Camera.Size size = getOptimalPictureSize(width, height, params.getPreviewSize(), params.getSupportedPictureSizes());
-      params.setPictureSize(size.width, size.height);
-    } else {
-      params.setPictureSize(width, height);
-    }
-	  currentQuality = quality; 
+    Camera.Size size = getOptimalPictureSize(width, height, params.getPreviewSize(), params.getSupportedPictureSizes());
+    params.setPictureSize(size.width, size.height);
+    currentQuality = quality; 
 
 	  if(cameraCurrentlyLocked == Camera.CameraInfo.CAMERA_FACING_FRONT) {
 		// The image will be recompressed in the callback
