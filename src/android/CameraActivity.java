@@ -520,10 +520,11 @@ public class CameraActivity extends Fragment {
       }
       
     } else {
-      
-      size.width = width;
-      size.height = height;
-      
+      for(int i=0;i<supportedSizes.size();i++)
+      {
+          if(supportedSizes.get(i).width >= width)
+              size = supportedSizes.get(i);
+      } 
     }
     //Log.d(TAG, "CameraPreview optimalPictureSize " + size.width + 'x' + size.height);
     return size;
