@@ -510,20 +510,22 @@ public class CameraActivity extends Fragment {
         }
       }
     } */
+    Camera.Size size = supportedSizes.get(0);
     if(width == 0 || height == 0) {
-      Camera.Size size = supportedSizes.get(0);
       for(int i=0;i<supportedSizes.size();i++)
       {
           if(supportedSizes.get(i).width > size.width)
               size = supportedSizes.get(i);
       }
-      return size;
     } else {
-      Camera.Size size = mCamera.new Size(width, height);
-      return size;
+      for(int i=0;i<supportedSizes.size();i++)
+      {
+          if(supportedSizes.get(i).width >= width && supportedSizes.get(i).height >= height)
+              size = supportedSizes.get(i);
+      } 
     }
     //Log.d(TAG, "CameraPreview optimalPictureSize " + size.width + 'x' + size.height);
-    //return size;
+    return size;
   }
 
   public void takePicture(final int width, final int height, final int quality){
